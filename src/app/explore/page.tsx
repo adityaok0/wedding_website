@@ -10,7 +10,7 @@ const exploreItems = [
   { name: "Venue", href: "/venue", icon: MapPin, desc: "Where the magic happens" },
   { name: "Gallery", href: "/gallery", icon: ImageIcon, desc: "Moments captured in time" },
   // { name: "RSVP", href: "/rsvp", icon: MailOpen, desc: "Confirm your presence" },
-  { name: "Travel & Stay", href: "/travel", icon: Plane, desc: "Accommodation and directions" },
+  { name: "Travel", href: "/travel", icon: Plane, desc: "Accommodation and directions" },
   { name: "Guest Book", href: "/guestbook", icon: MessageSquareHeart, desc: "Leave your wishes for us" },
 ];
 
