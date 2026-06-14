@@ -143,7 +143,6 @@ export default function GuestBookPage() {
                   </p>
                   <div className="flex justify-between items-end mt-4 pt-4 border-t border-muted/50">
                     <h3 className="font-playfair text-lg text-deep-forest">{wish.name}</h3>
-                    <span className="font-sans text-[10px] text-sage-green uppercase tracking-wider">{wish.date}</span>
                   </div>
                 </motion.div>
               ))}
