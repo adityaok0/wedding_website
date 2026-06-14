@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Envelope } from "@/components/welcome/Envelope";
 import { TempleDoors } from "@/components/welcome/TempleDoors";
 import { Hero } from "@/components/welcome/Hero";
-// import { useBackgroundMusic } from "@/hooks/useBackgroundMusic";
 import { useMusic } from "@/context/MusicContext";
 import { Volume2, VolumeX } from "lucide-react";
 
