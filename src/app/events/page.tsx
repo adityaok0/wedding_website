@@ -15,18 +15,22 @@ const events = [
     endTime: "12:30",
     venue: "Contour Backwaters Convention Center, Kerala",
     desc: "Join us as we take our vows in a traditional Kerala Hindu ceremony.",
-    // ...colors
+    color: "bg-ivory",
+    textColor: "text-deep-forest",
+    accent: "bg-soft-gold",
   },
   {
     title: "Reception Celebration",
-    date: "13 August 2026",
+    date: "09 August 2026",
     time: "11:00 AM - 02:30 PM",
     startTime: "11:00",
     endTime: "14:30",
     venue: "City Palace Auditorium, Beypore",
-    desc: "Join us for an afternoon of joy, laughter, and dancing.",
-    // ...colors
-  }
+    desc: "Join us for an afternoon of joy, laughter, and dancing as we celebrate our union with family and friends.",
+    color: "bg-deep-forest",
+    textColor: "text-ivory",
+    accent: "bg-soft-gold",
+  },
 ];
 
 export default function EventsPage() {
