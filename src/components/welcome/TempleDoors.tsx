@@ -8,7 +8,7 @@ export function TempleDoors({ onComplete }: { onComplete: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setIsOpen(true), 100);
+    const timer1 = setTimeout(() => setIsOpen(true), 800);
     const timer2 = setTimeout(() => onComplete(), 4500);
 
     return () => {
