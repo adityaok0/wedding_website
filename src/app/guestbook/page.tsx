@@ -1,43 +1,63 @@
 "use client";
 
 import { SlideUp } from "@/components/animations/SlideUp";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Heart, Quote } from "lucide-react";
+import { Send, Heart, Quote, Loader2 } from "lucide-react";
 
-// Mock Guestbook entries
-const initialWishes = [
-  { id: 1, name: "Arun & Priya", message: "Wishing you a lifetime of love and happiness. May your journey together be as beautiful as this wedding!", date: "12 Aug 2025" },
-  { id: 2, name: "Sneha Reddy", message: "So incredibly happy for both of you. Can't wait for the big day. Cheers to the beautiful couple!", date: "14 Aug 2025" },
-  { id: 3, name: "The Sharma Family", message: "Congratulations Aditya and Sarayu! Sending you all our love and blessings for your future together.", date: "20 Aug 2025" }
-];
+type Wish = {
+  id: number;
+  name: string;
+  message: string;
+  date: string;
+};
+
+const API = process.env.NEXT_PUBLIC_GUESTBOOK_URL!;
 
 export default function GuestBookPage() {
-  const [wishes, setWishes] = useState(initialWishes);
+  const [wishes, setWishes] = useState<Wish[]>([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch existing wishes
+  useEffect(() => {
+    fetch(API)
+      .then((res) => res.json())
+      .then((data: Wish[]) => {
+        setWishes(data.reverse()); // newest first
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setError("Couldn't load messages. Please refresh.");
+        setIsLoading(false);
+      });
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
 
     setIsSubmitting(true);
+    setError(null);
 
-    // Mock API call
-    setTimeout(() => {
-      const newWish = {
-        id: Date.now(),
-        name,
-        message,
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-      };
-      
-      setWishes([newWish, ...wishes]);
+    try {
+      const res = await fetch(API, {
+        method: "POST",
+        body: JSON.stringify({ name, message }),
+      });
+
+      const newWish: Wish = await res.json();
+      setWishes((prev) => [newWish, ...prev]);
       setName("");
       setMessage("");
+    } catch {
+      setError("Failed to post message. Please try again.");
+    } finally {
       setIsSubmitting(false);
-    }, 800);
+    }
   };
 
   return (
@@ -49,7 +69,7 @@ export default function GuestBookPage() {
       </SlideUp>
 
       <div className="max-w-xl mx-auto flex flex-col md:flex-row-reverse gap-10">
-        {/* Form Section */}
+        {/* Form */}
         <div className="md:w-1/2">
           <SlideUp delay={0.2} className="sticky top-6">
             <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 shadow-xl border border-muted">
@@ -57,36 +77,36 @@ export default function GuestBookPage() {
                 <Heart className="text-soft-gold" size={18} />
                 Write a Message
               </h2>
+
+              {error && (
+                <p className="text-red-400 font-sans text-xs mb-4 text-center">{error}</p>
+              )}
+
               <div className="space-y-4">
-                <div>
-                  <input 
-                    type="text" 
-                    required
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    className="w-full bg-ivory/50 border border-muted rounded-xl px-4 py-3 font-sans text-sm text-deep-forest focus:outline-none focus:border-soft-gold transition-colors"
-                    placeholder="Your Name"
-                  />
-                </div>
-                <div>
-                  <textarea 
-                    required
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                    className="w-full bg-ivory/50 border border-muted rounded-xl px-4 py-3 font-sans text-sm text-deep-forest focus:outline-none focus:border-soft-gold transition-colors resize-none h-32"
-                    placeholder="Your wishes for the couple..."
-                  />
-                </div>
-                <button 
-                  type="submit" 
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-ivory/50 border border-muted rounded-xl px-4 py-3 font-sans text-sm text-deep-forest focus:outline-none focus:border-soft-gold transition-colors"
+                  placeholder="Your Name"
+                />
+                <textarea
+                  required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full bg-ivory/50 border border-muted rounded-xl px-4 py-3 font-sans text-sm text-deep-forest focus:outline-none focus:border-soft-gold transition-colors resize-none h-32"
+                  placeholder="Your wishes for the couple..."
+                />
+                <button
+                  type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-deep-forest text-ivory py-3 rounded-xl font-sans text-xs uppercase tracking-widest font-medium hover:bg-deep-forest/90 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-deep-forest text-ivory py-3 rounded-xl font-sans text-xs uppercase tracking-widest font-medium hover:bg-deep-forest/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
                 >
-                  {isSubmitting ? "Sending..." : (
-                    <>
-                      <Send size={16} />
-                      Post Message
-                    </>
+                  {isSubmitting ? (
+                    <><Loader2 size={16} className="animate-spin" /> Sending...</>
+                  ) : (
+                    <><Send size={16} /> Post Message</>
                   )}
                 </button>
               </div>
@@ -94,28 +114,39 @@ export default function GuestBookPage() {
           </SlideUp>
         </div>
 
-        {/* Wishes List Section */}
+        {/* Wishes */}
         <div className="md:w-1/2 space-y-6">
-          <AnimatePresence>
-            {wishes.map((wish, index) => (
-              <motion.div
-                key={wish.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-muted relative"
-              >
-                <Quote className="absolute top-4 right-4 text-soft-gold/20" size={40} />
-                <p className="font-sans text-sm text-deep-forest leading-relaxed mb-4 relative z-10 italic">
-                  &quot;{wish.message}&quot;
-                </p>
-                <div className="flex justify-between items-end mt-4 pt-4 border-t border-muted/50">
-                  <h3 className="font-playfair text-lg text-deep-forest">{wish.name}</h3>
-                  <span className="font-sans text-[10px] text-sage-green uppercase tracking-wider">{wish.date}</span>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          {isLoading ? (
+            // Skeleton
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-muted animate-pulse space-y-3">
+                <div className="h-3 bg-soft-gold/20 rounded w-3/4" />
+                <div className="h-3 bg-soft-gold/20 rounded w-full" />
+                <div className="h-3 bg-soft-gold/20 rounded w-1/2" />
+              </div>
+            ))
+          ) : (
+            <AnimatePresence>
+              {wishes.map((wish, index) => (
+                <motion.div
+                  key={wish.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="bg-white rounded-2xl p-6 shadow-sm border border-muted relative"
+                >
+                  <Quote className="absolute top-4 right-4 text-soft-gold/20" size={40} />
+                  <p className="font-sans text-sm text-deep-forest leading-relaxed mb-4 relative z-10 italic">
+                    &quot;{wish.message}&quot;
+                  </p>
+                  <div className="flex justify-between items-end mt-4 pt-4 border-t border-muted/50">
+                    <h3 className="font-playfair text-lg text-deep-forest">{wish.name}</h3>
+                    <span className="font-sans text-[10px] text-sage-green uppercase tracking-wider">{wish.date}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
         </div>
       </div>
     </main>
