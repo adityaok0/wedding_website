@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond, Poppins } from "next/font/google";
 import "./globals.css";
+import { MusicProvider } from "@/context/MusicContext";
+import { MuteButton } from "@/components/MuteButton";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair-display",
@@ -37,7 +39,10 @@ export default function RootLayout({
       className={`${playfair.variable} ${cormorant.variable} ${poppins.variable} antialiased`}
     >
       <body className="min-h-screen bg-ivory text-deep-forest overflow-x-hidden font-sans flex flex-col">
+         <MusicProvider>
         {children}
+        <MuteButton /> 
+        </MusicProvider>  
         <BottomNav />
       </body>
     </html>
