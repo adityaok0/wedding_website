@@ -119,13 +119,41 @@ export default function GuestBookPage() {
         {/* Wishes */}
         <div className="md:w-1/2 space-y-6">
           {isLoading ? (
-            // Skeleton
+            // Elegant Shimmer Skeleton
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-muted animate-pulse space-y-3">
-                <div className="h-3 bg-soft-gold/20 rounded w-3/4" />
-                <div className="h-3 bg-soft-gold/20 rounded w-full" />
-                <div className="h-3 bg-soft-gold/20 rounded w-1/2" />
-              </div>
+              <motion.div
+                key={`skeleton-${i}`}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="bg-white rounded-2xl p-6 shadow-sm border border-muted relative overflow-hidden"
+              >
+                {/* Moving Shimmer Gradient */}
+                <motion.div
+                  className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-soft-gold/10 to-transparent"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 1.5,
+                    ease: "linear",
+                  }}
+                />
+
+                {/* Decorative Quote Icon (matches final loaded state) */}
+                <Quote className="absolute top-4 right-4 text-soft-gold/10 z-10" size={40} />
+
+                {/* Skeleton Text Lines */}
+                <div className="space-y-3 mb-6 relative z-10 pt-2">
+                  <div className="h-3 bg-soft-gold/20 rounded-full w-full" />
+                  <div className="h-3 bg-soft-gold/20 rounded-full w-5/6" />
+                  <div className="h-3 bg-soft-gold/20 rounded-full w-3/4" />
+                </div>
+
+                {/* Skeleton Name/Footer */}
+                <div className="flex justify-between items-end mt-4 pt-4 border-t border-muted/50 relative z-10">
+                  <div className="h-5 bg-soft-gold/30 rounded-full w-28" />
+                </div>
+              </motion.div>
             ))
           ) : (
             <AnimatePresence>
