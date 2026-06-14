@@ -36,7 +36,7 @@ export default function RsvpPage() {
       </SlideUp>
 
       <div className="max-w-md mx-auto">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="sync">
           {!isSuccess ? (
             <motion.div
               key="form"

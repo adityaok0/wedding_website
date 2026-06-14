@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 interface Petal {
   id: number;
   x: number;
+  drift: number;
   delay: number;
   duration: number;
   size: number;
@@ -19,7 +20,8 @@ export function FloatingPetals() {
     // Generate petals only on the client to avoid hydration mismatch
     const generatedPetals = Array.from({ length: 15 }).map((_, i) => ({
       id: i,
-      x: Math.random() * 100, // percentage vw
+      x: Math.random() * 100,
+      drift: Math.random() * 20 - 10,
       delay: Math.random() * 10,
       duration: 10 + Math.random() * 15,
       size: 10 + Math.random() * 20,
@@ -29,7 +31,7 @@ export function FloatingPetals() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
       {petals.map((petal) => (
         <motion.div
           key={petal.id}
@@ -42,7 +44,7 @@ export function FloatingPetals() {
           }}
           animate={{
             y: "110vh",
-            x: `${petal.x + (Math.random() * 20 - 10)}vw`,
+            x: `${petal.x + petal.drift}vw`,
             rotate: petal.rotation + 360,
             opacity: [0, 1, 1, 0],
           }}

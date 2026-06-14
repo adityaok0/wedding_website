@@ -8,23 +8,21 @@ export function TempleDoors({ onComplete }: { onComplete: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Automatically open after a short delay
-    const timer1 = setTimeout(() => setIsOpen(true), 800);
-    // Notify completion after doors open + read time
+    const timer1 = setTimeout(() => setIsOpen(true), 100);
     const timer2 = setTimeout(() => onComplete(), 4500);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [onComplete]);
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-deep-forest overflow-hidden flex items-center justify-center">
       {/* Background Behind Doors */}
       <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-soft-gold/20 via-deep-forest to-deep-forest">
         <FloatingPetals />
-        
+
         {/* Soft Sunlight Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] bg-soft-gold/30 rounded-full blur-[100px] pointer-events-none" />
 
@@ -50,7 +48,7 @@ export function TempleDoors({ onComplete }: { onComplete: () => void }) {
       >
         {/* Door details */}
         <div className="w-4 h-32 md:h-48 border-2 border-soft-gold rounded-full flex items-center justify-center">
-           <div className="w-2 h-16 bg-soft-gold rounded-full" />
+          <div className="w-2 h-16 bg-soft-gold rounded-full" />
         </div>
         {/* Decorative panels */}
         <div className="absolute top-10 bottom-10 left-4 right-12 md:right-16 border border-[#5D4037] rounded-sm opacity-50" />
@@ -65,7 +63,7 @@ export function TempleDoors({ onComplete }: { onComplete: () => void }) {
       >
         {/* Door details */}
         <div className="w-4 h-32 md:h-48 border-2 border-soft-gold rounded-full flex items-center justify-center">
-           <div className="w-2 h-16 bg-soft-gold rounded-full" />
+          <div className="w-2 h-16 bg-soft-gold rounded-full" />
         </div>
         {/* Decorative panels */}
         <div className="absolute top-10 bottom-10 left-12 md:left-16 right-4 border border-[#5D4037] rounded-sm opacity-50" />

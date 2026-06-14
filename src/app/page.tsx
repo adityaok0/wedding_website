@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Envelope } from "@/components/welcome/Envelope";
 import { TempleDoors } from "@/components/welcome/TempleDoors";
@@ -13,12 +13,15 @@ type SequenceStep = "envelope" | "doors" | "hero";
 export default function WelcomeSequence() {
   const [step, setStep] = useState<SequenceStep>("envelope");
   const [muted, setMuted] = useState(false);
-  const { play,pause } = useMusic();
+  const { play, pause } = useMusic();
 
   const handleEnvelopeOpen = () => {
     play(); // safe here — triggered by user gesture
     setStep("doors");
   };
+  const handleDoorsComplete = useCallback(() => {
+    setStep("hero");
+  }, []);
 
   const toggleMute = () => {
     if (muted) {
@@ -31,7 +34,7 @@ export default function WelcomeSequence() {
 
   return (
     <main className="w-full min-h-screen bg-ivory">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="sync">
         {step === "envelope" && (
           <motion.div
             key="envelope"
@@ -52,7 +55,7 @@ export default function WelcomeSequence() {
             transition={{ duration: 1 }}
             className="absolute inset-0"
           >
-            <TempleDoors onComplete={() => setStep("hero")} />
+            <TempleDoors onComplete={handleDoorsComplete} />
           </motion.div>
         )}
 
