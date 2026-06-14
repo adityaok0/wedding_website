@@ -4,6 +4,7 @@ import { SlideUp } from "@/components/animations/SlideUp";
 import { ArrowRight, BookHeart, CalendarHeart, MapPin, Image as ImageIcon, MailOpen, Plane, MessageSquareHeart } from "lucide-react";
 import Link from "next/link";
 
+
 const exploreItems = [
   // { name: "Our Story", href: "/story", icon: BookHeart, desc: "How we met and fell in love" },
   { name: "Events", href: "/events", icon: CalendarHeart, desc: "Schedule of our celebrations" },
