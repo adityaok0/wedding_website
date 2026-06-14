@@ -1,5 +1,6 @@
 "use client";
 
+import { FlowerPetals } from "@/components/animations/FlowerPetals";
 import { SlideUp } from "@/components/animations/SlideUp";
 import { Navigation } from "lucide-react";
 
@@ -36,6 +37,7 @@ const VENUES: VenueDetails[] = [
 export default function VenuePage() {
   return (
     <main className="min-h-screen bg-ivory pb-32">
+      <FlowerPetals count={18} />
       {/* Page Header */}
       <div className="pt-16 pb-8 text-center">
         <SlideUp>

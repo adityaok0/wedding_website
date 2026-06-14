@@ -4,6 +4,7 @@ import { SlideUp } from "@/components/animations/SlideUp";
 import { CalendarPlus, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 import { generateICS, downloadICS } from "@/utils/calendar";
+import { FlowerPetals } from "@/components/animations/FlowerPetals";
 
 
 const events = [
@@ -36,6 +37,7 @@ const events = [
 export default function EventsPage() {
   return (
     <main className="min-h-screen bg-ivory pt-12 pb-32 px-6">
+      <FlowerPetals count={18} />
       <SlideUp className="text-center mb-10">
         <h1 className="font-playfair text-4xl text-deep-forest mb-2">Events</h1>
         <p className="font-cormorant text-lg text-sage-green italic">Join our celebrations</p>

@@ -6,6 +6,7 @@ import { SlideUp } from "../animations/SlideUp";
 import { Countdown } from "./Countdown";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
+import { FlowerPetals } from "../animations/FlowerPetals";
 
 export function Hero() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export function Hero() {
 
   return (
     <div className="relative min-h-screen bg-deep-forest flex flex-col items-center justify-center overflow-hidden">
+      <FlowerPetals count={18} />
       {/* Dreamy Kerala backwaters background (placeholder using CSS gradients + animation) */}
       <div className="absolute inset-0 z-0">
         <motion.div 

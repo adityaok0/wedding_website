@@ -4,6 +4,7 @@ import { SlideUp } from "@/components/animations/SlideUp";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Heart, Quote, Loader2 } from "lucide-react";
+import { FlowerPetals } from "@/components/animations/FlowerPetals";
 
 type Wish = {
   id: number;
@@ -62,6 +63,7 @@ export default function GuestBookPage() {
 
   return (
     <main className="min-h-screen bg-ivory pt-12 pb-32 px-6">
+      <FlowerPetals count={18} />
       <SlideUp className="text-center mb-10">
         <h1 className="font-playfair text-4xl text-deep-forest mb-2">Guest Book</h1>
         <p className="font-cormorant text-lg text-sage-green italic">Leave a little love</p>

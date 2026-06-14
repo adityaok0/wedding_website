@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FlowerPetals } from "@/components/animations/FlowerPetals";
 
 type GalleryImage = {
   id: number;
@@ -46,6 +47,7 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-ivory pt-12 pb-32 px-4 md:px-8">
+      <FlowerPetals count={18} />
       <SlideUp className="text-center mb-8">
         <h1 className="font-playfair text-4xl text-deep-forest mb-2">Gallery</h1>
         <p className="font-cormorant text-lg text-sage-green italic">Moments captured in time</p>

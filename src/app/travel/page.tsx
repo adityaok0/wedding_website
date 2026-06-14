@@ -1,5 +1,6 @@
 "use client";
 
+import { FlowerPetals } from "@/components/animations/FlowerPetals";
 import { SlideUp } from "@/components/animations/SlideUp";
 import { Train, Plane, Hotel, MapPin, ExternalLink } from "lucide-react";
 
@@ -29,6 +30,7 @@ const TRAVEL_DATA = [
 export default function TravelPage() {
   return (
     <main className="min-h-screen bg-ivory pt-12 pb-32 px-6">
+      <FlowerPetals count={18} />
       <SlideUp className="text-center mb-12">
         <h1 className="font-playfair text-4xl text-deep-forest mb-2">Travel & Stay</h1>
         <p className="font-cormorant text-lg text-sage-green italic">Your guide to joining us</p>
