@@ -9,7 +9,7 @@ import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   const router = useRouter();
-  const weddingDate = new Date("2026-08-09T12:12:00+05:30"); // 09 August 2026, 12:12 PM IST
+  const weddingDate = new Date("2026-08-09T12:00:00+05:30"); // 09 August 2026, 12:00 PM IST
 
   return (
     <div className="relative min-h-screen bg-deep-forest flex flex-col items-center justify-center overflow-hidden">
@@ -57,7 +57,7 @@ export function Hero() {
             09 August 2026
           </p>
           <p className="font-poppins text-sm text-sage-green uppercase tracking-wider">
-            Muhurtham • 12:12 PM
+            Muhurtham • 12:00 PM - 12:30 PM
           </p>
           <div className="w-12 h-[1px] bg-soft-gold/50 mt-2" />
         </SlideUp>

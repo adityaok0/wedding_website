@@ -5,11 +5,11 @@ import { ArrowRight, BookHeart, CalendarHeart, MapPin, Image as ImageIcon, MailO
 import Link from "next/link";
 
 const exploreItems = [
-  { name: "Our Story", href: "/story", icon: BookHeart, desc: "How we met and fell in love" },
+  // { name: "Our Story", href: "/story", icon: BookHeart, desc: "How we met and fell in love" },
   { name: "Events", href: "/events", icon: CalendarHeart, desc: "Schedule of our celebrations" },
   { name: "Venue", href: "/venue", icon: MapPin, desc: "Where the magic happens" },
   { name: "Gallery", href: "/gallery", icon: ImageIcon, desc: "Moments captured in time" },
-  { name: "RSVP", href: "/rsvp", icon: MailOpen, desc: "Confirm your presence" },
+  // { name: "RSVP", href: "/rsvp", icon: MailOpen, desc: "Confirm your presence" },
   { name: "Travel & Stay", href: "/travel", icon: Plane, desc: "Accommodation and directions" },
   { name: "Guest Book", href: "/guestbook", icon: MessageSquareHeart, desc: "Leave your wishes for us" },
 ];

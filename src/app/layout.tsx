@@ -31,7 +31,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+  return (    
     <html
       lang="en"
       className={`${playfair.variable} ${cormorant.variable} ${poppins.variable} antialiased`}

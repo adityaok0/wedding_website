@@ -12,8 +12,8 @@ export function BottomNav() {
   const navItems = [
     { name: "Home", href: "/explore", icon: Home },
     { name: "Events", href: "/events", icon: Calendar },
-    { name: "Gallery", href: "/gallery", icon: ImageIcon },
-    { name: "RSVP", href: "/rsvp", icon: Mail },
+    { name: "Gallery", href: "/gallery", icon: ImageIcon }
+    // { name: "RSVP", href: "/rsvp", icon: Mail },
   ];
 
   // Don't show nav on the initial sequence pages
