@@ -21,7 +21,7 @@ const events = [
   },
   {
     title: "Reception Celebration",
-    date: "09 August 2026",
+    date: "13 August 2026",
     time: "11:00 AM - 02:30 PM",
     startTime: "11:00",
     endTime: "14:30",
