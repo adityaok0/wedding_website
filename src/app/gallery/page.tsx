@@ -3,15 +3,9 @@
 import { SlideUp } from "@/components/animations/SlideUp";
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  X, Search, Heart, Share2, Download, ChevronLeft, ChevronRight,
-  Filter, Check, Copy, Loader2
-} from "lucide-react";
+import { X, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FlowerPetals } from "@/components/animations/FlowerPetals";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-
-// Custom SVG icons for social media (since lucide-react doesn't include brand icons)
 
 type GalleryImage = {
   id: number;
@@ -57,136 +51,6 @@ function Toast({ message, type = 'success', onClose }: { message: string; type?:
         <X className="w-4 h-4" />
       )}
       <span className="font-sans text-sm">{message}</span>
-    </motion.div>
-  );
-}
-
-function ShareMenu({
-  image,
-  onClose
-}: {
-  image: GalleryImage;
-  onClose: () => void;
-}) {
-  const [copied, setCopied] = useState(false);
-  const [nativeShareSupported, setNativeShareSupported] = useState(false);
-
-  useEffect(() => {
-    setNativeShareSupported(!!navigator.share);
-  }, []);
-
-  const shareUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/gallery?image=${image.id}`
-    : '';
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-        onClose();
-      }, 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
-  const handleNativeShare = async () => {
-    try {
-      const response = await fetch(image.url);
-      const blob = await response.blob();
-      const file = new File([blob], `${image.title || 'image'}.jpg`, { type: 'image/jpeg' });
-
-      await navigator.share({
-        title: image.title || 'Gallery Image',
-        text: `Check out this beautiful photo from our gallery!`,
-        url: shareUrl,
-        files: [file],
-      });
-    } catch (err) {
-      if ((err as Error).name !== 'AbortError') {
-        console.error('Share failed:', err);
-      }
-    }
-  };
-
-  const handleSocialShare = (platform: string) => {
-    const text = encodeURIComponent(`Check out this beautiful photo!`);
-    const url = encodeURIComponent(shareUrl);
-
-    let shareLink = '';
-    switch (platform) {
-      case 'facebook':
-        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-      case 'twitter':
-        shareLink = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-        break;
-      case 'whatsapp':
-        shareLink = `https://wa.me/?text=${text}%20${url}`;
-        break;
-    }
-
-    window.open(shareLink, '_blank', 'width=600,height=400');
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      className="absolute bottom-full right-0 mb-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-4 min-w-[280px] z-[102]"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <h3 className="font-cormorant text-lg font-semibold text-deep-forest mb-3">
-        Share this photo
-      </h3>
-
-      {nativeShareSupported && (
-        <button
-          onClick={handleNativeShare}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-soft-gold/10 transition-colors mb-2"
-        >
-          <Share2 className="w-5 h-5 text-deep-forest" />
-          <span className="font-sans text-sm text-deep-forest">Share via...</span>
-        </button>
-      )}
-
-
-
-      <div className="border-t border-muted pt-3">
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={shareUrl}
-            readOnly
-            className="flex-1 px-3 py-2 bg-muted/50 rounded-lg font-sans text-xs text-deep-forest truncate"
-            onClick={(e) => (e.target as HTMLInputElement).select()}
-          />
-          <button
-            onClick={handleCopyLink}
-            className={cn(
-              "px-4 py-2 rounded-lg font-sans text-xs font-medium transition-all flex items-center gap-1",
-              copied
-                ? "bg-green-500 text-white"
-                : "bg-deep-forest text-ivory hover:bg-deep-forest/90"
-            )}
-          >
-            {copied ? (
-              <>
-                <Check className="w-3 h-3" />
-                Copied
-              </>
-            ) : (
-              <>
-                <Copy className="w-3 h-3" />
-                Copy
-              </>
-            )}
-          </button>
-        </div>
-      </div>
     </motion.div>
   );
 }
@@ -265,15 +129,9 @@ export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [likedImages, setLikedImages] = useState<Set<number>>(new Set());
-  const [showFilters, setShowFilters] = useState(false);
-  const [showShareMenu, setShowShareMenu] = useState(false);
-  const [downloading, setDownloading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const { ref: loadMoreRef, inView } = useIntersectionObserver({
+  const { ref: loadMoreRef } = useIntersectionObserver({
     threshold: 0.1,
   });
 
@@ -301,30 +159,18 @@ export default function GalleryPage() {
   }, []);
 
   const filteredImages = useMemo(() => {
-    let filtered = activeCategory === "All"
-      ? images
-      : images.filter((img) => img.category === activeCategory);
-
-    if (searchQuery) {
-      filtered = filtered.filter(img =>
-        img.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        img.title?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    return filtered;
-  }, [images, activeCategory, searchQuery]);
+    if (activeCategory === "All") return images;
+    return images.filter((img) => img.category === activeCategory);
+  }, [images, activeCategory]);
 
   const openLightbox = useCallback((image: GalleryImage, index: number) => {
     setSelectedImage(image);
     setCurrentIndex(index);
-    setShowShareMenu(false);
     document.body.style.overflow = 'hidden';
   }, []);
 
   const closeLightbox = useCallback(() => {
     setSelectedImage(null);
-    setShowShareMenu(false);
     document.body.style.overflow = '';
   }, []);
 
@@ -334,7 +180,6 @@ export default function GalleryPage() {
       : (currentIndex - 1 + filteredImages.length) % filteredImages.length;
     setCurrentIndex(newIndex);
     setSelectedImage(filteredImages[newIndex]);
-    setShowShareMenu(false);
   }, [currentIndex, filteredImages]);
 
   useEffect(() => {
@@ -383,35 +228,9 @@ export default function GalleryPage() {
         </motion.div>
       </SlideUp>
 
-      <SlideUp delay={0.2} className="mb-8 max-w-3xl mx-auto">
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-green" />
-            <input
-              type="text"
-              placeholder="Search gallery..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border border-muted rounded-full font-sans text-sm text-deep-forest placeholder-sage-green focus:outline-none focus:border-soft-gold transition-colors"
-            />
-          </div>
-          {isMobile && (
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="p-3 bg-white/80 backdrop-blur-sm border border-muted rounded-full hover:border-soft-gold transition-colors"
-            >
-              <Filter className="w-4 h-4 text-sage-green" />
-            </button>
-          )}
-        </div>
-      </SlideUp>
-
-      <SlideUp delay={0.3} className="mb-12">
+      <SlideUp delay={0.2} className="mb-12">
         <motion.div
-          className={cn(
-            "flex items-center gap-2 md:gap-4 overflow-x-auto hide-scrollbar",
-            showFilters || !isMobile ? "justify-center" : "hidden"
-          )}
+          className="flex items-center gap-2 md:gap-4 overflow-x-auto hide-scrollbar justify-center"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
@@ -442,7 +261,7 @@ export default function GalleryPage() {
         </motion.div>
       </SlideUp>
 
-      <SlideUp delay={0.4}>
+      <SlideUp delay={0.3}>
         {loading ? (
           <SkeletonLoader />
         ) : filteredImages.length === 0 ? (
@@ -451,14 +270,8 @@ export default function GalleryPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center py-20"
           >
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-soft-gold/10 flex items-center justify-center">
-              <Search className="w-10 h-10 text-sage-green/40" />
-            </div>
             <p className="font-cormorant text-2xl text-deep-forest mb-2">
               No images found
-            </p>
-            <p className="font-sans text-sage-green">
-              Try adjusting your search or filter
             </p>
           </motion.div>
         ) : (
@@ -500,11 +313,6 @@ export default function GalleryPage() {
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-deep-forest/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-
-                      <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-
-                      </div>
-
                       <div className="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-sans text-deep-forest uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {img.category}
                       </div>
@@ -546,8 +354,6 @@ export default function GalleryPage() {
             </div>
             <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex items-center justify-between z-[101]">
               <div className="flex items-center gap-3">
-                <div className="relative">
-                </div>
                 <button
                   className="p-2 bg-white/10 backdrop-blur-md rounded-full text-ivory hover:bg-white/20 transition-all ml-2"
                   onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
