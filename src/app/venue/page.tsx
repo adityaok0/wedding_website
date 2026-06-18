@@ -103,7 +103,7 @@ export default function VenuePage() {
               </SlideUp>
 
               {/* Map Embed */}
-              <SlideUp delay={index * 0.25}>
+              {/* <SlideUp delay={index * 0.25}>
                 <div className="bg-white rounded-2xl p-2 shadow-lg border border-muted overflow-hidden h-[250px] relative">
                   <iframe 
                     src={venue.embedSrc} 
@@ -116,7 +116,7 @@ export default function VenuePage() {
                     className="relative z-10"
                   />
                 </div>
-              </SlideUp>
+              </SlideUp> */}
 
               {/* Subtle Divider between the two venues */}
               {index === 0 && (

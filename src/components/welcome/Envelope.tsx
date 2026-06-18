@@ -14,7 +14,12 @@ const waxParticles = [
   { x: -70, y: -20, scale: 0.6 }, { x: 70, y: -20, scale: 0.7 },
 ];
 
-export function Envelope({ onOpen }: { onOpen: () => void }) {
+type EnvelopeProps = {
+  guestName?: string;
+  onOpen: () => void;
+};
+
+export function Envelope({ guestName, onOpen }: EnvelopeProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -67,7 +72,12 @@ export function Envelope({ onOpen }: { onOpen: () => void }) {
           >
             <div className="text-center w-full px-6">
               <div className="w-full border-b border-soft-gold/40 pb-3 mb-3">
-                 <span className="font-playfair text-deep-forest text-xl tracking-wide uppercase">You are invited</span>
+                {guestName && (
+                  <p className="font-cormorant text-lg text-deep-forest mb-1">
+                    Dear {guestName},
+                  </p>
+                )}
+                <span className="font-playfair text-deep-forest text-xl tracking-wide uppercase">You are invited</span>
               </div>
               <div className="space-y-2 px-4 opacity-30">
                 <div className="h-1 w-full bg-deep-forest rounded-full" />

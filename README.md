@@ -16,6 +16,20 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Personalized Guest Links
+
+Personalized greetings can use a base64url-encoded name:
+
+```text
+https://your-domain.com/?to=QWRpdHlhIEZhbWlseQ
+```
+
+This renders `Dear Aditya Family,` on the envelope. If the value is missing or
+cannot be decoded, the app keeps the default envelope text: `You are invited`.
+
+Use base64url rather than plain base64 for WhatsApp links because it avoids
+characters like `+`, `/`, and `=` that can make URLs awkward.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
