@@ -51,22 +51,8 @@ export default function TravelPage() {
               <h2 className="font-playfair text-2xl text-deep-forest border-b border-soft-gold/30 pb-2">
                 {item.event}
               </h2>
-              
-              {/* Air Section */}
-              <SlideUp delay={0.1 * idx}>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-muted">
-                  <h3 className="font-playfair text-xl text-deep-forest mb-4 flex items-center gap-2">
-                    <Plane className="text-soft-gold" size={20} /> By Air
-                  </h3>
-                  {item.airports.map((apt, i) => (
-                    <div key={i} className="flex justify-between items-center">
-                      <h4 className="font-sans font-medium text-deep-forest text-sm">{apt.name}</h4>
-                      {apt.dist && <span className="font-cormorant text-soft-gold text-lg">{apt.dist}</span>}
-                    </div>
-                  ))}
-                </div>
-              </SlideUp>
 
+            
               {/* Train Section */}
               <SlideUp delay={0.2 * idx}>
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-muted">
@@ -85,6 +71,22 @@ export default function TravelPage() {
                   </div>
                 </div>
               </SlideUp>
+                
+              {/* Air Section */}
+              <SlideUp delay={0.1 * idx}>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-muted">
+                  <h3 className="font-playfair text-xl text-deep-forest mb-4 flex items-center gap-2">
+                    <Plane className="text-soft-gold" size={20} /> By Air
+                  </h3>
+                  {item.airports.map((apt, i) => (
+                    <div key={i} className="flex justify-between items-center">
+                      <h4 className="font-sans font-medium text-deep-forest text-sm">{apt.name}</h4>
+                      {apt.dist && <span className="font-cormorant text-soft-gold text-lg">{apt.dist}</span>}
+                    </div>
+                  ))}
+                </div>
+              </SlideUp>
+
             </div>
           ))}
         </div>
