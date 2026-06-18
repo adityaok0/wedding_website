@@ -9,7 +9,7 @@ import { FlowerPetals } from "@/components/animations/FlowerPetals";
 
 const events = [
   {
-    title: "Wedding Ceremony",
+    title: "Aditya & Sarayu Wedding Ceremony",
     date: "09 August 2026",
     time: "12:00 - 12:30 PM",
     startTime: "12:00",
@@ -21,7 +21,7 @@ const events = [
     accent: "bg-soft-gold",
   },
   {
-    title: "Reception Celebration",
+    title: "Aditya & Sarayu Reception Celebration",
     date: "13 August 2026",
     time: "11:00 AM - 02:30 PM",
     startTime: "11:00",
