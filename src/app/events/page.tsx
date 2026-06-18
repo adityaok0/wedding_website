@@ -14,7 +14,7 @@ const events = [
     time: "12:00 - 12:30 PM",
     startTime: "12:00",
     endTime: "12:30",
-    venue: "Contour Backwaters Convention Center, Kerala",
+    venue: "Contour Backwaters Convention Center, Changanassery, Kerala",
     desc: "Join us as we take our vows in a traditional Kerala Hindu ceremony.",
     color: "bg-ivory",
     textColor: "text-deep-forest",
