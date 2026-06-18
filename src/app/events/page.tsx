@@ -9,7 +9,8 @@ import { FlowerPetals } from "@/components/animations/FlowerPetals";
 
 const events = [
   {
-    title: "Aditya & Sarayu Wedding Ceremony",
+    title: "Wedding Ceremony",
+    calendarTitle: "Aditya & Sarayu Wedding Ceremony",
     date: "09 August 2026",
     time: "12:00 - 12:30 PM",
     startTime: "12:00",
@@ -21,7 +22,8 @@ const events = [
     accent: "bg-soft-gold",
   },
   {
-    title: "Aditya & Sarayu Reception Celebration",
+    title: "Reception Celebration",
+    calendarTitle: "Aditya & Sarayu Reception Celebration",
     date: "13 August 2026",
     time: "11:00 AM - 02:30 PM",
     startTime: "11:00",
@@ -85,14 +87,14 @@ export default function EventsPage() {
 
                 <button className="w-full py-4 rounded-full border border-soft-gold flex items-center justify-center gap-2 hover:bg-soft-gold/10 transition-colors group" onClick={() => {
                   const ics = generateICS({
-                    title: event.title,
+                    title: event.calendarTitle,
                     date: event.date,
                     startTime: event.startTime,
                     endTime: event.endTime,
                     venue: event.venue,
                     desc: event.desc,
                   });
-                  downloadICS(ics, event.title);
+                  downloadICS(ics, event.calendarTitle);
                 }}>
                   <CalendarPlus size={18} className="text-soft-gold group-hover:scale-110 transition-transform" />
                   <span className="font-sans text-xs uppercase tracking-widest font-medium">Add to Calendar</span>

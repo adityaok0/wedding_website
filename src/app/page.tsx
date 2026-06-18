@@ -7,6 +7,7 @@ import { TempleDoors } from "@/components/welcome/TempleDoors";
 import { Hero } from "@/components/welcome/Hero";
 import { useMusic } from "@/context/MusicContext";
 import { Volume2, VolumeX } from "lucide-react";
+import { Analytics } from "@vercel/analytics/next"
 
 type SequenceStep = "envelope" | "doors" | "hero";
 
@@ -34,6 +35,7 @@ export default function WelcomeSequence() {
 
   return (
     <main className="w-full min-h-screen bg-ivory">
+      <Analytics/>
       <AnimatePresence mode="sync">
         {step === "envelope" && (
           <motion.div
